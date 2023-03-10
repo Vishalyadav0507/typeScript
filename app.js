@@ -1,41 +1,12 @@
-var num1Element = document.getElementById('num1');
-var num2Element = document.getElementById('num2');
-var buttonElement = document.querySelector('button');
-var textArray = [];
-// generics
-var numArray = [];
-function add(num1, num2) {
-    if (typeof num1 === "number" && typeof num2 === "number") {
-        return num1 + num2;
-    }
-    else if (typeof num1 === "string" && typeof num2 === "string") {
-        return num1 + " " + num2;
-    }
-    else {
-        return +num1 + +num2;
-    }
-}
-function printResult(obj) {
-    console.log(obj.val, obj.timestamp);
-}
-buttonElement.addEventListener('click', function () {
-    var num1 = num1Element.value;
-    var num2 = num2Element.value;
-    var result = add(+num1, +num2);
-    numArray.push(result);
-    var stringResult = add(num1, num2);
-    textArray.push(stringResult);
-    printResult({ val: result, timestamp: new Date() });
-    console.log(result);
-    console.log(stringResult);
-    console.log(numArray, textArray);
-});
-// generics in Promise
-var myPromise = new Promise(function (resolve, reject) {
-    setTimeout(function () {
-        resolve('its worked!');
-    }, 1000);
-});
-myPromise.then(function (result) {
-    console.log(result);
-});
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const todos_1 = __importDefault(require("./route/todos"));
+const app = (0, express_1.default)();
+app.use(body_parser_1.default.json()); // body parser is using for parsing incoming req body
+app.use(todos_1.default);
+app.listen(3000);
