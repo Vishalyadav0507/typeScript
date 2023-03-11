@@ -13,9 +13,10 @@ router.get('/', (req, res, next) => {
 });
 router.post('/todo', (req, res, next) => {
     try {
+        const body = req.body;
         const newTodo = {
             id: new Date().toISOString(),
-            text: req.body.text
+            text: body.text
         };
         todos.push(newTodo);
         res.status(201).json({ message: "successfully added", todo: newTodo, todos: todos });
@@ -27,8 +28,14 @@ router.post('/todo', (req, res, next) => {
 });
 router.post('/deleteTodo/:id', (req, res, next) => {
     try {
-        const id = req.params.id;
-        todos = todos.filter(todoItem => todoItem.id !== id);
+        const param = req.params;
+        const id = param.id;
+        todos = todos.filter(todoItem => todoItem.id !== id); //using filter method
+        // for(var i=0;i<todos.length;i++){
+        //     if(todos[i].id===id){
+        //         todos.slice(i,1)
+        //     }
+        // }
         res.status(201).json({ message: "successfully deleted" });
     }
     catch (err) {
@@ -37,12 +44,14 @@ router.post('/deleteTodo/:id', (req, res, next) => {
 });
 router.put('/editTodo/:id', (req, res, next) => {
     try {
-        const id = req.params.id;
+        const param = req.params;
+        const id = param.id;
+        const body = req.body;
         const TodoIndex = todos.findIndex(todoIndex => todoIndex.id === id);
         if (TodoIndex >= 0) {
             todos[TodoIndex] = {
                 id: todos[TodoIndex].id,
-                text: req.body.text
+                text: body.text
             };
             res.status(201).json({ message: "updated successfully", todo: todos[TodoIndex], todos: todos });
         }
